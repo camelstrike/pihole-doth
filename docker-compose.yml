@@ -1,10 +1,15 @@
-version: "3"
+version: "3.8"
 
 # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
+    build:
+      context: ./pihole
+      dockerfile: Dockerfile
+      args:
+        - TAG=${TAG}
     ports:
       - "153:53/tcp"
       - "153:53/udp"
@@ -12,13 +17,40 @@ services:
       - "80:80/tcp"
     environment:
       TZ: 'UTC'
-      # WEBPASSWORD: 'set a secure password here or it will be random'
-    # Volumes store your data between container upgrades
+      WEBPASSWORD: '${PIHOLE_WEBPASSWORD}'
+    env_file:
+      - .env
     volumes:
-      - './etc-pihole/:/etc/pihole/'
-      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
-    # Recommended but not required (DHCP needs NET_ADMIN)
-    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+      - pihole-volume:/etc/pihole/
+      - pihole-dnsmask-volume:/etc/dnsmasq.d/
+      - pihole-updatelists:/etc/pihole-updatelists/
+      - ./pihole/pihole-updatelists.conf:/etc/pihole-updatelists/pihole-updatelists.conf
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
+  wg-easy:
+    container_name: wg-easy
+    image: weejewel/wg-easy
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    environment:
+      WG_HOST: '${WG_HOST}'
+      PASSWORD: '${WG_PASSWORD}'
+    env_file:
+      - .env
+    volumes:
+      - wg-easy-volume:/etc/wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+
+volumes:
+  wg-easy-volume:
+  pihole-volume:
+  pihole-dnsmask-volume:
+  pihole-updatelists:
