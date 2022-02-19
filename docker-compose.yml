@@ -4,53 +4,48 @@ version: "3.8"
 services:
   pihole:
     container_name: pihole
-    image: pihole/pihole:latest
+    image: pihole/pihole:$PIHOLE_TAG
     build:
       context: ./pihole
       dockerfile: Dockerfile
       args:
-        - TAG=${TAG}
+        - PIHOLE_TAG=${PIHOLE_TAG}
     ports:
       - "153:53/tcp"
       - "153:53/udp"
       - "67:67/udp"
-      - "80:80/tcp"
+      - "8080:80/tcp"
     environment:
       TZ: 'UTC'
       WEBPASSWORD: '${PIHOLE_WEBPASSWORD}'
+      # quad9 Secured: Malware blocking, DNSSEC Validation
+      PIHOLE_DNS_: '9.9.9.9;149.112.112.112'
+      DNSSEC: 'true'
+      WEBTHEME: 'default-dark'
     env_file:
       - .env
     volumes:
-      - pihole-volume:/etc/pihole/
-      - pihole-dnsmask-volume:/etc/dnsmasq.d/
+      - pihole:/etc/pihole/
+      - pihole-dnsmask:/etc/dnsmasq.d/
       - pihole-updatelists:/etc/pihole-updatelists/
       - ./pihole/pihole-updatelists.conf:/etc/pihole-updatelists/pihole-updatelists.conf
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
-  wg-easy:
-    container_name: wg-easy
-    image: weejewel/wg-easy
-    ports:
-      - "51820:51820/udp"
-      - "51821:51821/tcp"
-    environment:
-      WG_HOST: '${WG_HOST}'
-      PASSWORD: '${WG_PASSWORD}'
+  nginx:
+    container_name: nginx
+    image: nginx:$NGINX_TAG
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        - NGINX_TAG=${NGINX_TAG}
     env_file:
       - .env
-    volumes:
-      - wg-easy-volume:/etc/wireguard
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    sysctls:
-      - net.ipv4.ip_forward=1
-      - net.ipv4.conf.all.src_valid_mark=1
-    restart: unless-stopped
+
 
 volumes:
-  wg-easy-volume:
-  pihole-volume:
-  pihole-dnsmask-volume:
+  pihole:
+  pihole-dnsmask:
   pihole-updatelists:
+  certbot:
