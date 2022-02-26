@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PIHOLE_DOT_ENV_VARS=(
+    PIHOLE_WEBPASSWORD
+    CLOUDFLARE_TOKEN
+    CERTBOT_DOMAIN    
+    CERTBOT_EMAIL
+    CERTBOT_ENV
+)
+
+SOURCE_ENV_VAR="$HOME/.pihole-doth"
+[ -f "$SOURCE_ENV_VAR" ] && rm "$SOURCE_ENV_VAR"
+
+for ENV_VAR in "${PIHOLE_DOT_ENV_VARS[@]}"
+ do
+  read -rp "$ENV_VAR: " ENV_VAR_VALUE
+  echo "export $ENV_VAR=$ENV_VAR_VALUE" >> "$SOURCE_ENV_VAR"
+done
