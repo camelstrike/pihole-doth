@@ -1,7 +1,9 @@
 #!/bin/sh
 
+sleep 30
+
 CERTBOT_DIR="/etc/letsencrypt/live"
-CERTBOT_RELOAD_NGINX="ssh -q -o StrictHostKeyChecking=no -i /opt/pihole-doth/id_ed25519 nginx nginx -s reload"
+CERTBOT_RELOAD_NGINX="supervisorctl -s http://nginx:9001 restart nginx"
 
 CERTBOT_ARGS=$(
 if [ "$CERTBOT_ENV" = "staging" ]
@@ -28,8 +30,7 @@ if [ "$CERTBOT_ARGS" != "error" ] && [ "$IS_CERT_SELF_SIGNED" = "true" ]
   -m "$CERTBOT_EMAIL" \
   --dns-cloudflare-credentials /opt/pihole-doth/cloudflare.ini \
   --dns-cloudflare-propagation-seconds 30 \
-  -d $CERTBOT_ARGS \
-  --post-hook "$CERTBOT_RELOAD_NGINX"
+  -d $CERTBOT_ARGS --post-hook "$CERTBOT_RELOAD_NGINX"
 elif [ "$IS_CERT_AVAIL" = "true" ] && [ "$CERTBOT_ARGS" != "error" ] && [ "$IS_CERT_SELF_SIGNED" = "false" ]
  then
     certbot renew --post-hook "$CERTBOT_RELOAD_NGINX"

@@ -22,13 +22,11 @@ apk upgrade
 sed -i s/3.12/3.15/g /etc/apk/repositories
 apk update
 apk upgrade
-apk add --no-cache supercronic openssh-client-default
+apk add --no-cache supercronic
+pip install supervisor
 mkdir -p /etc/letsencrypt/live/${CERTBOT_DOMAIN}
 openssl req -x509 -nodes -newkey rsa:4096 -days 1 -keyout /etc/letsencrypt/live/${CERTBOT_DOMAIN}/privkey.pem -out /etc/letsencrypt/live/${CERTBOT_DOMAIN}/fullchain.pem -subj '/CN=localhost'
 EOF
-
-ARG TAG
-COPY --from=camelstrike/nginx-doth:1.0 /opt/pihole-doth/id_ed25519 /opt/pihole-doth/id_ed25519
 
 ARG CERTBOT_DOMAIN
 ARG CERTBOT_EMAIL

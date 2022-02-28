@@ -63,8 +63,6 @@ services:
       - pihole-doth
     volumes:
       - certbot:/etc/letsencrypt
-    depends_on:
-      - pihole
 
 networks:
   pihole-doth:
