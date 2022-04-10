@@ -12,6 +12,12 @@ services:
         - CLOUDFLARE_TOKEN
         - CERTBOT_EMAIL
         - CERTBOT_ENV
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
+    env_file:
+      - .env
     networks:
       pihole-doth:
         ipv4_address: 172.30.30.40
@@ -28,6 +34,12 @@ services:
       context: ./pihole
       args:
         - PIHOLE_TAG
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
+    env_file:
+      - .env
     ports:
       - 8080:80/tcp
     networks:
@@ -59,6 +71,12 @@ services:
         - TAG
         - NGINX_TAG
         - CERTBOT_DOMAIN
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
+    env_file:
+      - .env
     ports:
      - 53:53/tcp
      - 53:53/udp
@@ -79,6 +97,12 @@ services:
       context: ./unbound
       args:
         - UNBOUND_TAG
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
+    env_file:
+      - .env
     networks:
       pihole-doth:
         ipv4_address: 172.30.30.10
