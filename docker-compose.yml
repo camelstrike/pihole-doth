@@ -13,11 +13,14 @@ services:
         - CERTBOT_EMAIL
         - CERTBOT_ENV
     networks:
-      - pihole-doth
+      pihole-doth:
+        ipv4_address: 172.30.30.40
     volumes:
       - certbot:/etc/letsencrypt
     depends_on:
       - nginx
+      - unbound
+      - pihole
   pihole:
     container_name: pihole
     image: camelstrike/pihole-doth:$TAG
@@ -28,12 +31,13 @@ services:
     ports:
       - 8080:80/tcp
     networks:
-      - pihole-doth
+      pihole-doth:
+        ipv4_address: 172.30.30.30
     environment:
       TZ: 'UTC'
       WEBPASSWORD: '${PIHOLE_WEBPASSWORD}'
-      # quad9 Secured: Malware blocking, DNSSEC Validation
-      PIHOLE_DNS_: '9.9.9.9;149.112.112.112'
+      # Unbound fixed IP
+      PIHOLE_DNS_: '172.30.30.10#5335'
       DNSSEC: 'true'
       WEBTHEME: 'default-dark'
     volumes:
@@ -44,6 +48,8 @@ services:
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
+    depends_on:
+      - unbound
   nginx:
     container_name: nginx
     image: camelstrike/nginx-doth:$TAG
@@ -60,15 +66,32 @@ services:
      - 443:443/tcp
      - 80:80/tcp
     networks:
-      - pihole-doth
+      pihole-doth:
+        ipv4_address: 172.30.30.20
     volumes:
       - certbot:/etc/letsencrypt
-
-networks:
-  pihole-doth:
+    depends_on:
+      - unbound
+  unbound:
+    container_name: unbound
+    image: camelstrike/unbound-doth:$TAG
+    build:
+      context: ./unbound
+      args:
+        - UNBOUND_TAG
+    networks:
+      pihole-doth:
+        ipv4_address: 172.30.30.10
 
 volumes:
   pihole:
   pihole-dnsmask:
   pihole-updatelists:
   certbot:
+
+networks:
+  pihole-doth:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.30.30.0/24"
