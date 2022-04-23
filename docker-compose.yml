@@ -8,10 +8,10 @@ services:
       context: ./certbot
       args:
         - CERTBOT_TAG
-        - CERTBOT_DOMAIN
-        - CLOUDFLARE_TOKEN
-        - CERTBOT_EMAIL
-        - CERTBOT_ENV
+        - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
+        - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
+        - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+        - CERTBOT_ENV=${CERTBOT_ENV:-staging}
       x-bake:
         platforms:
           - linux/amd64
@@ -42,12 +42,14 @@ services:
       - .env
     ports:
       - 8080:80/tcp
+    dns:
+      - 127.0.0.1
     networks:
       pihole-doth:
         ipv4_address: 172.30.30.30
     environment:
       TZ: 'UTC'
-      WEBPASSWORD: '${PIHOLE_WEBPASSWORD}'
+      WEBPASSWORD: '${PIHOLE_WEBPASSWORD:-changeme}'
       # Unbound fixed IP
       PIHOLE_DNS_: '172.30.30.10#5335'
       DNSSEC: 'true'
@@ -70,7 +72,7 @@ services:
       args:
         - TAG
         - NGINX_TAG
-        - CERTBOT_DOMAIN
+        - CERTBOT_DOMAIN=${CERTBOT_DOMAIN:-mydomain.com}
       x-bake:
         platforms:
           - linux/amd64
