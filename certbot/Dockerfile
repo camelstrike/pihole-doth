@@ -23,6 +23,7 @@ pip install certbot certbot-dns-cloudflare
 pip cache purge
 mkdir -p /etc/letsencrypt/live/${CERTBOT_DOMAIN}
 openssl req -x509 -nodes -newkey rsa:4096 -days 1 -keyout /etc/letsencrypt/live/${CERTBOT_DOMAIN}/privkey.pem -out /etc/letsencrypt/live/${CERTBOT_DOMAIN}/fullchain.pem -subj '/CN=localhost'
+apk del python3 python3-dev build-base musl-dev libffi-dev rust cargo
 EOF
 
 ARG CERTBOT_DOMAIN
