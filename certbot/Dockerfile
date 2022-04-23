@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.3-labs
 ARG CERTBOT_TAG
-FROM certbot/dns-cloudflare:$CERTBOT_TAG
+FROM alpine:$CERTBOT_TAG
 
 
 ARG CLOUDFLARE_TOKEN
@@ -18,12 +18,9 @@ COPY --chmod=760 start-services.sh /opt/pihole-doth/start-services.sh
 ARG CERTBOT_DOMAIN
 RUN <<EOF
 apk update
-apk upgrade
-sed -i s/3.12/3.15/g /etc/apk/repositories
-apk update
-apk upgrade
-apk add --no-cache supercronic
-pip install supervisor
+apk add --no-cache supervisor supercronic openssl python3 python3-dev py3-pip build-base libressl-dev musl-dev libffi-dev rust cargo 
+pip install certbot certbot-dns-cloudflare
+pip cache purge
 mkdir -p /etc/letsencrypt/live/${CERTBOT_DOMAIN}
 openssl req -x509 -nodes -newkey rsa:4096 -days 1 -keyout /etc/letsencrypt/live/${CERTBOT_DOMAIN}/privkey.pem -out /etc/letsencrypt/live/${CERTBOT_DOMAIN}/fullchain.pem -subj '/CN=localhost'
 EOF
