@@ -76,7 +76,7 @@ services:
       args:
         - TAG
         - NGINX_TAG
-        - CERTBOT_DOMAIN=${CERTBOT_DOMAIN:-mydomain.com}
+        - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
       x-bake:
         platforms:
           - linux/amd64
