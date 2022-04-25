@@ -4,6 +4,18 @@ services:
   certbot:
     container_name: certbot
     image: camelstrike/certbot-doth:$TAG
+    build:
+      context: ./certbot
+      args:
+        - CERTBOT_TAG
+        - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
+        - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
+        - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+        - CERTBOT_ENV=${CERTBOT_ENV:-staging}
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
     environment:
       - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
       - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
@@ -22,6 +34,14 @@ services:
   pihole:
     container_name: pihole
     image: camelstrike/pihole-doth:$TAG
+    build:
+      context: ./pihole
+      args:
+        - PIHOLE_TAG
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
     env_file:
       - .env
     ports:
@@ -51,6 +71,16 @@ services:
   nginx:
     container_name: nginx
     image: camelstrike/nginx-doth:$TAG
+    build:
+      context: ./nginx
+      args:
+        - TAG
+        - NGINX_TAG
+        - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
     environment:
       - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
     env_file:
@@ -72,6 +102,14 @@ services:
   unbound:
     container_name: unbound
     image: camelstrike/unbound-doth:$TAG
+    build:
+      context: ./unbound
+      args:
+        - UNBOUND_TAG
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
     env_file:
       - .env
     networks:
