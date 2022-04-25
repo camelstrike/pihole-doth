@@ -16,6 +16,11 @@ services:
         platforms:
           - linux/amd64
           - linux/arm64
+    environment:
+      - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
+      - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+      - CERTBOT_ENV=${CERTBOT_ENV}
     env_file:
       - .env
     networks:
@@ -24,7 +29,6 @@ services:
     volumes:
       - certbot:/etc/letsencrypt
     depends_on:
-      - nginx
       - unbound
       - pihole
   pihole:
@@ -77,6 +81,8 @@ services:
         platforms:
           - linux/amd64
           - linux/arm64
+    environment:
+      - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
     env_file:
       - .env
     ports:
@@ -91,6 +97,7 @@ services:
     volumes:
       - certbot:/etc/letsencrypt
     depends_on:
+      - certbot
       - unbound
   unbound:
     container_name: unbound
