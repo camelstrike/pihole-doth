@@ -1,0 +1,27 @@
+version: 2.1
+
+# Define the jobs we want to run for this project
+jobs:
+  build-amd:
+    docker:
+      - image: ubuntu-2004:202101-01
+    resource_class: medium
+    steps:
+      - checkout
+      - run: cd build
+      - run: docker-compose build
+  build-arm:
+    machine:
+      image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+    steps:
+      - checkout
+      - run: cd build
+      - run: docker-compose build
+
+# Orchestrate our job run sequence
+workflows:
+  build_and_test:
+    jobs:
+      - build-amd
+      - build-arm
