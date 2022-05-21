@@ -9,7 +9,12 @@ jobs:
     steps:
       - checkout
       - run: cd build
-      - run: TAG=2.0 DOCKER_BUILDKIT=1 docker-compose build --no-cache
+      - run: 
+          command: |
+            export TAG=2.0
+            export DOCKER_BUILDKIT=1
+            docker-compose up -d
+            docker-compose down
   build-arm:
     machine:
       image: ubuntu-2004:2022.04.1
@@ -17,7 +22,12 @@ jobs:
     steps:
       - checkout
       - run: cd build
-      - run: TAG=2.0 DOCKER_BUILDKIT=1 docker-compose build --no-cache
+      - run: 
+          command: |
+            export TAG=2.0
+            export DOCKER_BUILDKIT=1
+            docker-compose up -d
+            docker-compose down
 
 # Orchestrate our job run sequence
 workflows:
