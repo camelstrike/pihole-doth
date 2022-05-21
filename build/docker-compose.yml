@@ -1,3 +1,4 @@
+# To build use TAG=2.0 docker buildx bake --push
 version: "3.8"
 
 services:

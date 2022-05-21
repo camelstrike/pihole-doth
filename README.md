@@ -81,5 +81,20 @@ You can set your env vars in the following ways (choose one):
 
 ## Usage
 ```
-docker-compose up
+# Start services
+docker-compose up -d
+
+# Access pihole
+https://YOUR_DOMAIN:8080/admin
+
+```
+
+# Build
+```
+Clone repo
+cd build
+docker-compose build
+
+#To build multiarch and push to docker repo
+docker buildx bake --push
 ```
