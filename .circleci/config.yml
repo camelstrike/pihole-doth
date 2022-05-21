@@ -13,7 +13,7 @@ jobs:
           command: |
             export TAG=2.0
             export DOCKER_BUILDKIT=1
-            docker-compose build
+            ls -las
   build-arm:
     machine:
       image: ubuntu-2004:2022.04.1
@@ -25,7 +25,7 @@ jobs:
           command: |
             export TAG=2.0
             export DOCKER_BUILDKIT=1
-            docker-compose build
+            ls -lash
 
 # Orchestrate our job run sequence
 workflows:

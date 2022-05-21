@@ -3,6 +3,7 @@ version: "3.8"
 services:
   certbot:
     container_name: certbot
+    image: camelstrike/certbot-doth:$TAG
     build:
       context: ./certbot
       args:
@@ -32,6 +33,7 @@ services:
       - pihole
   pihole:
     container_name: pihole
+    image: camelstrike/pihole-doth:$TAG
     build:
       context: ./pihole
       args:
@@ -74,6 +76,7 @@ services:
       - unbound
   nginx:
     container_name: nginx
+    image: camelstrike/nginx-doth:$TAG
     build:
       context: ./nginx
       args:
@@ -104,6 +107,7 @@ services:
       - unbound
   unbound:
     container_name: unbound
+    image: camelstrike/unbound-doth:$TAG
     build:
       context: ./unbound
       args:
