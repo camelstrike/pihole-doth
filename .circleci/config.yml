@@ -14,8 +14,6 @@ jobs:
             export TAG=2.0
             export DOCKER_BUILDKIT=1
             docker-compose build
-            docker login -u $DOCKER_USER -p $DOCKER_CIRCLECI_TOKEN
-            docker-compose push
   build-arm:
     machine:
       image: ubuntu-2004:2022.04.1
@@ -28,8 +26,6 @@ jobs:
             export TAG=2.0
             export DOCKER_BUILDKIT=1
             docker-compose build
-            docker login -u $DOCKER_USER -p $DOCKER_CIRCLECI_TOKEN
-            docker-compose push
 
 # Orchestrate our job run sequence
 workflows:
