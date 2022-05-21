@@ -4,28 +4,20 @@ version: 2.1
 jobs:
   build-amd:
     machine:
-      image: ubuntu-2004:202201-02
+      image: ubuntu-2004:2022.04.1
     resource_class: medium
     steps:
       - checkout
       - run: cd build
-      - run: 
-          command: |
-            export TAG=2.0
-            export DOCKER_BUILDKIT=1
-            docker-compose build
+      - run: TAG=2.0 DOCKER_BUILDKIT=1 docker-compose build
   build-arm:
     machine:
-      image: ubuntu-2004:202201-02
+      image: ubuntu-2004:2022.04.1
     resource_class: arm.medium
     steps:
       - checkout
       - run: cd build
-      - run: 
-          command: |
-            export TAG=2.0
-            export DOCKER_BUILDKIT=1
-            docker-compose build
+      - run: TAG=2.0 DOCKER_BUILDKIT=1 docker-compose build
 
 # Orchestrate our job run sequence
 workflows:
