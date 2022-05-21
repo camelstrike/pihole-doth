@@ -3,10 +3,11 @@
 # Pihole DNS over TLS/HTTPS
 This project aims to create a Pihole DNS over TLS/HTTPS solution running on docker. Docker images are compatible with AMD64/ARM64 cpu archs.
 It makes use of the following projects:
-- [pi-hole](https://github.com/pi-hole/pi-hole "pi-hole")
+- [Pi-hole](https://github.com/pi-hole/pi-hole "pi-hole")
 - [nginx-dns](https://github.com/TuxInvader/nginx-dns "nginx-dns")
 - [certbot](https://github.com/certbot/certbot "certbot")
 - [unbound](https://github.com/NLnetLabs/unbound "unbound")
+- [Pi-hole's Lists Updater by Jack'lul](https://github.com/jacklul/pihole-updatelists "Pi-hole's Lists Updater by Jack'lul")
 
 ## Requirements
 - A Domain Name
