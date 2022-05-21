@@ -9,7 +9,11 @@ jobs:
     steps:
       - checkout
       - run: cd build
-      - run: TAG=2.0 docker-compose build
+      - run: 
+          command: |
+            export TAG=2.0
+            export DOCKER_BUILDKIT=1
+            docker-compose build
   build-arm:
     machine:
       image: ubuntu-2004:202201-02
@@ -17,7 +21,11 @@ jobs:
     steps:
       - checkout
       - run: cd build
-      - run: TAG=2.0 docker-compose build
+      - run: 
+          command: |
+            export TAG=2.0
+            export DOCKER_BUILDKIT=1
+            docker-compose build
 
 # Orchestrate our job run sequence
 workflows:
