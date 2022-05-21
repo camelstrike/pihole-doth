@@ -13,7 +13,6 @@ jobs:
             cd build
             export TAG=2.0
             export DOCKER_BUILDKIT=1
-            ls -las
             docker-compose build
   build-arm:
     machine:
@@ -26,7 +25,6 @@ jobs:
             cd build
             export TAG=2.0
             export DOCKER_BUILDKIT=1
-            ls -lash
             docker-compose build
 
 # Orchestrate our job run sequence
