@@ -13,10 +13,10 @@ COPY --chmod=760 start-services.sh /opt/pihole-doth/start-services.sh
 
 RUN <<EOF
 apk update
-apk add --no-cache supervisor supercronic openssl python3 python3-dev py3-pip build-base libressl-dev musl-dev libffi-dev rust cargo 
+apk add --no-cache supervisor supercronic openssl python3 python3-dev py3-pip build-base libressl-dev musl-dev libffi-dev rust cargo tini
 pip install certbot certbot-dns-cloudflare
 pip cache purge
 apk del python3 python3-dev build-base musl-dev libffi-dev rust cargo
 EOF
 
-ENTRYPOINT ["/opt/pihole-doth/start-services.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/opt/pihole-doth/start-services.sh"]
