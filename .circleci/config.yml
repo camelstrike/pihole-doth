@@ -8,24 +8,26 @@ jobs:
     resource_class: medium
     steps:
       - checkout
-      - run: cd build
       - run: 
           command: |
+            cd build
             export TAG=2.0
             export DOCKER_BUILDKIT=1
             ls -las
+            docker-compose build
   build-arm:
     machine:
       image: ubuntu-2004:2022.04.1
     resource_class: arm.medium
     steps:
       - checkout
-      - run: cd build
       - run: 
           command: |
+            cd build
             export TAG=2.0
             export DOCKER_BUILDKIT=1
             ls -lash
+            docker-compose build
 
 # Orchestrate our job run sequence
 workflows:
