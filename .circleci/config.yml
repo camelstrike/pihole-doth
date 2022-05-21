@@ -13,8 +13,7 @@ jobs:
           command: |
             export TAG=2.0
             export DOCKER_BUILDKIT=1
-            docker-compose up -d
-            docker-compose down
+            docker-compose build
   build-arm:
     machine:
       image: ubuntu-2004:2022.04.1
@@ -26,8 +25,7 @@ jobs:
           command: |
             export TAG=2.0
             export DOCKER_BUILDKIT=1
-            docker-compose up -d
-            docker-compose down
+            docker-compose build
 
 # Orchestrate our job run sequence
 workflows:
