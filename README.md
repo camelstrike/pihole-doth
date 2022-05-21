@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/camelstrike/pihole-doth/tree/main.svg?style=shield)](https://circleci.com/gh/camelstrike/pihole-doth/tree/main)
+
 # Pihole DNS over TLS/HTTPS
 This project aims to create a Pihole DNS over TLS/HTTPS solution running on docker. Docker images are compatible with AMD64/ARM64 cpu archs.
 It makes use of the following projects:
