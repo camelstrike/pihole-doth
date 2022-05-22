@@ -7,4 +7,4 @@ echo "dns_cloudflare_api_token = $CLOUDFLARE_TOKEN" > /opt/pihole-doth/cloudflar
 /opt/pihole-doth/certbot-cert.sh
 
 # Run certbot renewal cron job
-supercronic /opt/pihole-doth/supercronic
+cron /opt/pihole-doth/supercronic
