@@ -17,4 +17,4 @@ apt update
 apt install supervisor tini cron certbot python3-certbot-dns-cloudflare -y
 EOF
 
-ENTRYPOINT ["/sbin/tini", "--", "/opt/pihole-doth/start-services.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/opt/pihole-doth/start-services.sh"]
