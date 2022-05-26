@@ -4,7 +4,7 @@
 This project aims to create a Pihole DNS over TLS/HTTPS solution running on docker. Docker images are compatible with AMD64/ARM64 cpu archs.
 It makes use of the following projects:
 - [Pi-hole](https://github.com/pi-hole/pi-hole "pi-hole")
-- [nginx-dns](https://github.com/TuxInvader/nginx-dns "nginx-dns")
+- [dnsproxy](https://github.com/AdguardTeam/dnsproxy "dnsproxy")
 - [certbot](https://github.com/certbot/certbot "certbot")
 - [unbound](https://github.com/NLnetLabs/unbound "unbound")
 - [Pi-hole's Lists Updater by Jack'lul](https://github.com/jacklul/pihole-updatelists "Pi-hole's Lists Updater by Jack'lul")
@@ -96,5 +96,5 @@ cd build
 docker-compose build
 
 #To build multiarch and push to docker repo
-docker buildx bake --push
+BUILD_TAG=v3.0 docker buildx bake --push
 ```
