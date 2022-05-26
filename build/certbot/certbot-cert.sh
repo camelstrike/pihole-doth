@@ -3,7 +3,7 @@
 sleep 30
 
 CERTBOT_DIR="/etc/letsencrypt/live"
-CERTBOT_RELOAD_NGINX="supervisorctl -s http://nginx:9001 restart nginx"
+CERTBOT_RELOAD_DNSPROXY="supervisorctl -s http://dnsproxy:9001 restart dnsproxy"
 
 CERTBOT_ARGS=$(
 if [ "$CERTBOT_ENV" = "staging" ]
@@ -30,10 +30,10 @@ if [ "$CERTBOT_ARGS" != "error" ] && [ "$IS_CERT_SELF_SIGNED" = "true" ]
   -m "$CERTBOT_EMAIL" \
   --dns-cloudflare-credentials /opt/pihole-doth/cloudflare.ini \
   --dns-cloudflare-propagation-seconds 30 \
-  -d $CERTBOT_ARGS --post-hook "$CERTBOT_RELOAD_NGINX"
+  -d $CERTBOT_ARGS --post-hook "$CERTBOT_RELOAD_DNSPROXY"
 elif [ "$IS_CERT_AVAIL" = "true" ] && [ "$CERTBOT_ARGS" != "error" ] && [ "$IS_CERT_SELF_SIGNED" = "false" ]
  then
-    certbot renew --post-hook "$CERTBOT_RELOAD_NGINX"
+    certbot renew --post-hook "$CERTBOT_RELOAD_DNSPROXY"
 else
  echo "Something is off or cert is self-signed, check logs"
  exit 0
