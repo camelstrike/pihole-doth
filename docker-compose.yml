@@ -53,19 +53,16 @@ services:
     restart: unless-stopped
     depends_on:
       - unbound
-  nginx:
-    container_name: nginx
-    image: camelstrike/nginx-doth:$TAG
+  dnsproxy:
+    container_name: dnsproxy
+    image: camelstrike/dnsproxy-doth:$TAG
     environment:
       - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
     env_file:
       - .env
     ports:
-     - 53:53/tcp
-     - 53:53/udp
      - 853:853/tcp
      - 443:443/tcp
-     - 80:80/tcp
     networks:
       pihole-doth:
         ipv4_address: 172.30.30.20
