@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1.3-labs
-ARG CERTBOT_TAG
-FROM ubuntu:$CERTBOT_TAG
+FROM ubuntu:22.04
 
 COPY <<supercronic /opt/pihole-doth/
 # Run certbot-cert.sh evrey 6 hours

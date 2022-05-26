@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1.3-labs
-ARG PIHOLE_TAG
-FROM pihole/pihole:$PIHOLE_TAG
+FROM pihole/pihole:2022.02.1
 
 RUN <<EOT
 echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
