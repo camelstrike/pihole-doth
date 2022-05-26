@@ -1,4 +1,4 @@
-# To build use TAG=2.0 docker buildx bake --push
+# To build use BUILD_TAG=v3.0 docker buildx bake --push
 version: "3.8"
 
 services:
