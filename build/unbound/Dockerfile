@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1.3-labs
-ARG UNBOUND_TAG
-FROM alpine:${UNBOUND_TAG}
+FROM alpine:3.15
 
 RUN <<EOT
 apk add --no-cache unbound

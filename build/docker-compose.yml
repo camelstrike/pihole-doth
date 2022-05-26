@@ -1,14 +1,13 @@
-# To build use TAG=2.0 docker buildx bake --push
+# To build use BUILD_TAG=v3.0 docker buildx bake --push
 version: "3.8"
 
 services:
   certbot:
     container_name: certbot
-    image: camelstrike/certbot-doth:$TAG
+    image: camelstrike/certbot-doth:$BUILD_TAG
     build:
       context: ./certbot
       args:
-        - CERTBOT_TAG
         - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
         - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
         - CERTBOT_EMAIL=${CERTBOT_EMAIL}
@@ -34,11 +33,9 @@ services:
       - pihole
   pihole:
     container_name: pihole
-    image: camelstrike/pihole-doth:$TAG
+    image: camelstrike/pihole-doth:$BUILD_TAG
     build:
       context: ./pihole
-      args:
-        - PIHOLE_TAG
       x-bake:
         platforms:
           - linux/amd64
@@ -69,21 +66,16 @@ services:
       - pihole:/etc/pihole/
       - pihole-dnsmask:/etc/dnsmasq.d/
       - pihole-updatelists:/etc/pihole-updatelists/
-      - ./pihole/pihole-updatelists.conf:/etc/pihole-updatelists/pihole-updatelists.conf
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
     depends_on:
       - unbound
-  nginx:
-    container_name: nginx
-    image: camelstrike/nginx-doth:$TAG
+  dnsproxy:
+    container_name: dnsproxy
+    image: camelstrike/dnsproxy-doth:$BUILD_TAG
     build:
-      context: ./nginx
-      args:
-        - TAG
-        - NGINX_TAG
-        - CERTBOT_DOMAIN=${CERTBOT_DOMAIN}
+      context: ./dnsproxy
       x-bake:
         platforms:
           - linux/amd64
@@ -93,11 +85,8 @@ services:
     env_file:
       - .env
     ports:
-     - 53:53/tcp
-     - 53:53/udp
      - 853:853/tcp
      - 443:443/tcp
-     - 80:80/tcp
     networks:
       pihole-doth:
         ipv4_address: 172.30.30.20
@@ -108,11 +97,9 @@ services:
       - unbound
   unbound:
     container_name: unbound
-    image: camelstrike/unbound-doth:$TAG
+    image: camelstrike/unbound-doth:$BUILD_TAG
     build:
       context: ./unbound
-      args:
-        - UNBOUND_TAG
       x-bake:
         platforms:
           - linux/amd64
